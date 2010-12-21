@@ -260,7 +260,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
-					"\"$(CINDER_PATH)/lib/libcinder.a\"",
+					"\"$(CINDER_PATH)/lib/libcinder_d.a\"",
 					"\"../../../lib/macosx/libfreenect.a\"",
 					"\"../../../lib/macosx/libusb-1.0.a\"",
 				);
