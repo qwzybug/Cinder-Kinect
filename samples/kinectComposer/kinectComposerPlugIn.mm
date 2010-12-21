@@ -18,6 +18,8 @@
 @dynamic outputDepthImage;
 @dynamic outputVideoImage;
 
+@dynamic inputTilt;
+
 + (NSDictionary *)attributes;
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:kQCPlugIn_Name, QCPlugInAttributeNameKey, kQCPlugIn_Description, QCPlugInAttributeDescriptionKey, nil];
@@ -36,6 +38,13 @@
 							@"Video Image", QCPortAttributeNameKey,
 							nil],
 						@"outputVideoImage",
+						[NSDictionary dictionaryWithObjectsAndKeys:
+							@"Tilt", QCPortAttributeNameKey,
+							[NSNumber numberWithInt:0], QCPortAttributeDefaultValueKey,
+							[NSNumber numberWithInt:-31], QCPortAttributeMinimumValueKey,
+							[NSNumber numberWithInt:32], QCPortAttributeMaximumValueKey,
+							nil],
+						@"inputTilt",
 						nil];
 	}
 	return [sAttributes objectForKey:key];
@@ -43,7 +52,7 @@
 
 + (QCPlugInExecutionMode)executionMode;
 {
-	return kQCPlugInExecutionModeProvider;
+	return kQCPlugInExecutionModeProcessor;
 }
 
 + (QCPlugInTimeMode) timeMode;
@@ -96,11 +105,13 @@
 
 - (BOOL) execute:(id<QCPlugInContext>)context atTime:(NSTimeInterval)time withArguments:(NSDictionary *)arguments
 {
+	// kinect frame calls need an OGL context
 	CGLContextObj ctx = CGLGetCurrentContext();
 	
 	CGLContextObj cgl_ctx = [context CGLContextObj];
 	CGLSetCurrentContext(cgl_ctx);
 	
+	// draw video and depth images
 	if( kinect.checkNewVideoFrame() )
 		videoTexture = kinect.getVideoImage();
 	
@@ -114,6 +125,11 @@
 		self.outputDepthImage = [[[CGLTextureImageProvider alloc] initWithTexture:depthTexture] autorelease];
 	
 	CGLSetCurrentContext(ctx);
+	
+	// check for tilt
+	if ([self didValueForInputKeyChange:@"inputTilt"]) {
+		kinect.setTilt([[self valueForInputKey:@"inputTilt"] intValue]);
+	}
 	
 	return YES;
 }

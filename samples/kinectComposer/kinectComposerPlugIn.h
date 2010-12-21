@@ -24,4 +24,6 @@
 @property (assign) id<QCPlugInOutputImageProvider> outputDepthImage;
 @property (assign) id<QCPlugInOutputImageProvider> outputVideoImage;
 
+@property double inputTilt;
+
 @end
