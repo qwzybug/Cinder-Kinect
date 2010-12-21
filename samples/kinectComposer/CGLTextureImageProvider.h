@@ -21,6 +21,6 @@
 
 @property (nonatomic, assign) cinder::gl::Texture texture;
 
-- (id)initWithTexture:(cinder::gl::Texture)texture;
+- (id)initWithTexture:(cinder::gl::Texture)inTexture;
 
 @end

@@ -30,6 +30,9 @@
 
 - (void)dealloc;
 {
+	// why doesn't this do anythin?
+	// texture.reset()
+	// but it works in the render call???
 	CGColorSpaceRelease(colorSpace);
 	
 	[super dealloc];
@@ -37,7 +40,12 @@
 
 - (NSRect) imageBounds;
 {
-	return NSMakeRect(0, 0, texture.getWidth(), texture.getHeight());
+	if (texture) {
+		return NSMakeRect(0, 0, texture.getWidth(), texture.getHeight());
+	}
+	else {
+		return NSMakeRect(0, 0, 640, 480);
+	}
 }
 
 - (BOOL) renderWithCGLContext:(CGLContextObj)cgl_ctx forBounds:(NSRect)bounds;
@@ -53,6 +61,9 @@
 		cinder::gl::draw( texture );
 	
 	CGLSetCurrentContext(ctx);
+	
+	if (texture)
+		texture.reset();
 	
 	return YES;
 }
