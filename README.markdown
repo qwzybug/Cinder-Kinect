@@ -24,12 +24,12 @@ Most everything is broken. Sorry!
 
 2. Clone this repository into Cinder/samples
 
-	cd Cinder/samples
-	git clone git@github.com:qwzybug/Cinder-Kinect.git
+        cd Cinder/samples
+        git clone git@github.com:qwzybug/Cinder-Kinect.git
 
 3. Install boost:
 
-	brew install boost
+        brew install boost
 
 4. Open `Cinder/xcode/Cinder.xcodeproj`
 
